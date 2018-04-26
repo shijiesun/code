@@ -16,7 +16,7 @@ typedef struct data {
 int main() {
     ssj::linked_list<int> ll;
 
-    int count = 2;
+    int count = 10;
 
     for (int i = 0; i < count; ++i) {
         ll.push(i);
@@ -30,5 +30,5 @@ int main() {
         ll.pop();
     }
     */
-    return 0;
+    return 1;
 }

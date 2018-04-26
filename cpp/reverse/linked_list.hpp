@@ -42,7 +42,7 @@ namespace ssj {
 
         void print() {
             node<T> * p = head->next;
-            while(p->next != nullptr) {
+            while(p != nullptr) {
                 cout << p->value << endl;
                 p = p->next;
             }
