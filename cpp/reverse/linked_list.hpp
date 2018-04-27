@@ -12,13 +12,13 @@ namespace ssj {
     template<typename T>
     class node {
     public:
-        T value;
+        T value_;
         node * next;
 
     public:
         node() {}
 
-        node(const T & v) : value(v), next(nullptr) {
+        explicit node(T v) : value_(move(v)), next(nullptr) {
         }
 
     private:
@@ -29,8 +29,8 @@ namespace ssj {
     template<typename T>
     class linked_list {
     public:
-        void push_back(const T & val) {
-            node<T> * n = new node<T>(val);
+        void push_back(T val) {
+            node<T> * n = new node<T>(move(val));
             n->next = nullptr;
 
             tail_->next = n;
@@ -48,7 +48,7 @@ namespace ssj {
                 }
 
                 if(p != nullptr) {
-                    return move(p->value);
+                    return move(p->value_);
 
                     delete p;
                     p = nullptr;
@@ -72,7 +72,7 @@ namespace ssj {
                 return unique_ptr<node<T>>(p);
 
   //if(p != nullptr) {
-  //cout << "pop:" << p->value << endl;
+  //cout << "pop:" << p->value_ << endl;
   //delete p;
   //p = nullptr;
   //}
@@ -81,10 +81,10 @@ namespace ssj {
             return nullptr;
         }
 */
-        void push(const T & val) {
+        void push(T val) {
             auto p = head_->next;
 
-            node<T> * n = new node<T>(val);
+            node<T> * n = new node<T>(move(val));
 
             if(p == nullptr) {
                 head_->next = n;
@@ -102,7 +102,7 @@ namespace ssj {
         void print() const {
             node<T> * p = head_->next;
             while(p != nullptr) {
-                cout << p->value << endl;
+                cout << p->value_ << endl;
                 p = p->next;
             }
         }
