@@ -29,7 +29,7 @@ namespace ssj {
     template<typename T>
     class linked_list {
     public:
-        void push_back(T val) {
+        void push_back(T && val) {
             node<T> * n = new node<T>(move(val));
             n->next = nullptr;
 
@@ -37,7 +37,23 @@ namespace ssj {
             tail_ = tail_->next;
         }
 
+        void push(T val) {
+            auto p = head_->next;
+
+            node<T> * n = new node<T>(move(val));
+
+            if(p == nullptr) {
+                head_->next = n;
+                tail_ = n;
+            } else {
+                n->next = p;
+                head_->next = n;
+            }
+        }
+
+
         T pop() {
+            cout << "call linked_list::pop" << endl;
             if(!empty()) {
                 auto p = head_->next;
                 head_->next = p->next;
@@ -81,20 +97,7 @@ namespace ssj {
             return nullptr;
         }
 */
-        void push(T val) {
-            auto p = head_->next;
 
-            node<T> * n = new node<T>(move(val));
-
-            if(p == nullptr) {
-                head_->next = n;
-                tail_ = n;
-            } else {
-                n->next = p;
-                head_->next = n;
-            }
-        }
-        
         void reverse() {
 
         }

@@ -9,7 +9,7 @@ class data_t {
 
     friend ostream & operator<<(ostream & out, const data_t & data);
 
-private:
+public:
     int value_;
 public:
     data_t() : value_(-1) {
@@ -52,37 +52,44 @@ int main() {
     {
         ssj::linked_list<data_t> ll;
 
-        int count = 10;
+        int count = 3;
+
+        cout << "==================== push_back" << endl;
 
         for (int i = 0; i < count; ++i) {
             ll.push_back(data_t(i));
         }
 
-        cout << "after push_back" << endl;
         ll.print();
+
+        cout << "==================== reverse" << endl;
 
         ll.reverse();
 
-        cout << "after reverse" << endl;
         ll.print();
 
+        cout << "==================== pop" << endl;
         while(!ll.empty()) {
-            auto value = ll.pop();
+            data_t value = ll.pop();
             cout << "pop:" << value << endl;
         }
 
         auto temp = ll.pop();
         cout << "pop empty:" << temp << endl;
 
+
+        cout << "==================== push" << endl;
+
         for (int i = 0; i < count; ++i) {
             data_t a(i);
-            data_t b = move(a);
-            ll.push(b);
+            ll.push(a);
+
+            cout << "push:" << a.value_ << endl;
         }
 
-        cout << "after push" << endl;
         ll.print();
 
+        cout << "==================== end" << endl;
     }
     return 1;
 }
