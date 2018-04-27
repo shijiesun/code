@@ -33,43 +33,65 @@ namespace ssj {
             node<T> * n = new node<T>(val);
             n->next = nullptr;
 
-            tail->next = n;
-            tail = tail->next;
+            tail_->next = n;
+            tail_ = tail_->next;
         }
 
-        unique_ptr<node<T>> pop() {
+        T pop() {
             if(!empty()) {
-                auto p = head->next;
-                head->next = p->next;
+                auto p = head_->next;
+                head_->next = p->next;
                 p->next = nullptr;
 
-                if(head->next == nullptr) {
-                    tail = head;
+                if(head_->next == nullptr) {
+                    tail_ = head_;
+                }
+
+                if(p != nullptr) {
+                    return move(p->value);
+
+                    delete p;
+                    p = nullptr;
+                }
+
+            }
+            return T();
+        }
+
+/*
+        unique_ptr<node<T>> pop() {
+            if(!empty()) {
+                auto p = head_->next;
+                head_->next = p->next;
+                p->next = nullptr;
+
+                if(head_->next == nullptr) {
+                    tail_ = head_;
                 }
 
                 return unique_ptr<node<T>>(p);
-/*
-  if(p != nullptr) {
-  cout << "pop:" << p->value << endl;
-  delete p;
-  p = nullptr;
-  }
-*/
+
+  //if(p != nullptr) {
+  //cout << "pop:" << p->value << endl;
+  //delete p;
+  //p = nullptr;
+  //}
+
             }
             return nullptr;
         }
-
+*/
         void push(const T & val) {
-            auto p = head->next;
+            auto p = head_->next;
 
             node<T> * n = new node<T>(val);
 
             if(p == nullptr) {
-                head->next = n;
-                tail = n;
+                head_->next = n;
+                tail_ = n;
             } else {
                 n->next = p;
-                head->next = n;
+                head_->next = n;
             }
         }
         
@@ -78,7 +100,7 @@ namespace ssj {
         }
 
         void print() const {
-            node<T> * p = head->next;
+            node<T> * p = head_->next;
             while(p != nullptr) {
                 cout << p->value << endl;
                 p = p->next;
@@ -86,27 +108,27 @@ namespace ssj {
         }
 
         bool empty() const {
-            return head->next == nullptr;
+            return head_->next == nullptr;
         }
 
     public:
         linked_list() {
-            head = new node<T>();
-            head->next = nullptr;
-            tail = head;
+            head_ = new node<T>();
+            head_->next = nullptr;
+            tail_ = head_;
         }
 
         ~linked_list() {
-            node<T> * p = head;
-            while(head->next != nullptr) {
+            node<T> * p = head_;
+            while(head_->next != nullptr) {
                 pop();
             }
 
-            if(head != nullptr) {
-                delete head;
-                head = nullptr;
+            if(head_ != nullptr) {
+                delete head_;
+                head_ = nullptr;
             }
-            tail = nullptr;
+            tail_ = nullptr;
         }
 
 
@@ -115,8 +137,8 @@ namespace ssj {
         linked_list & operator=(const linked_list & other);
 
     private:
-        node<T> * head;
-        node<T> * tail;
+        node<T> * head_;
+        node<T> * tail_;
     };
 
 } // namespace ssj

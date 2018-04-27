@@ -4,18 +4,23 @@
 #include "linked_list.hpp"
 
 using namespace std;
-/*
-  typedef struct data {
-  int value;
 
-  struct data(int v) : value(v) {
-  }
+class data_t {
 
-  } data_t;
-*/
+private:
+    int value_;
+public:
+    data_t(int v) : value_(v) {
+    }
+
+
+
+
+};
+
 int main() {
-//    while(1) {
-    {
+    while(1) {
+
         ssj::linked_list<int> ll;
 
         int count = 10;
@@ -33,8 +38,8 @@ int main() {
         ll.print();
 
         while(!ll.empty()) {
-            auto node = ll.pop();
-            cout << "pop:" << node->value << endl;
+            auto value = ll.pop();
+            cout << "pop:" << value << endl;
         }
 
         for (int i = 0; i < count; ++i) {
