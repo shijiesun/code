@@ -2,6 +2,7 @@
 #define __LINKED_LIST__
 
 #include <iostream>
+#include <memory>
 
 using namespace std;
 
@@ -28,7 +29,7 @@ namespace ssj {
     template<typename T>
     class linked_list {
     public:
-        void push(const T & val) {
+        void push_back(const T & val) {
             node<T> * n = new node<T>(val);
             n->next = nullptr;
 
@@ -36,11 +37,47 @@ namespace ssj {
             tail = tail->next;
         }
 
-        void pop() {
-            //todo
+        unique_ptr<node<T>> pop() {
+            if(!empty()) {
+                auto p = head->next;
+                head->next = p->next;
+                p->next = nullptr;
+
+                if(head->next == nullptr) {
+                    tail = head;
+                }
+
+                return unique_ptr<node<T>>(p);
+/*
+  if(p != nullptr) {
+  cout << "pop:" << p->value << endl;
+  delete p;
+  p = nullptr;
+  }
+*/
+            }
+            return nullptr;
         }
 
-        void print() {
+        void push(const T & val) {
+            auto p = head->next;
+
+            node<T> * n = new node<T>(val);
+
+            if(p == nullptr) {
+                head->next = n;
+                tail = n;
+            } else {
+                n->next = p;
+                head->next = n;
+            }
+        }
+        
+        void reverse() {
+
+        }
+
+        void print() const {
             node<T> * p = head->next;
             while(p != nullptr) {
                 cout << p->value << endl;
@@ -48,8 +85,8 @@ namespace ssj {
             }
         }
 
-        bool empty() {
-            return head == tail;
+        bool empty() const {
+            return head->next == nullptr;
         }
 
     public:
