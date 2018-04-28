@@ -34,6 +34,35 @@ namespace ssj {
         node & operator=(const node & other);
     };
 
+
+    template<typename T>
+    static void push_ptr_(node<T> * n, node<T> * head, node<T> * tail) {
+        assert(n != nullptr);
+        auto p = head->next_;
+        head->next_ = n;
+        if(p == nullptr) {
+            tail = n;
+        } else {
+            n->next_ = p;
+        }
+    }
+
+    template<typename T>
+    static node<T> * pop_ptr_(node<T> * head, node<T> * tail) {
+        if(head->next_ != nullptr) {
+            auto p = head->next_;
+            head->next_ = p->next_;
+            p->next_ = nullptr;
+
+            if(head->next_ == nullptr) {
+                tail = head;
+            }
+            return p;
+        }
+        return nullptr;
+    }
+
+
     template<typename T>
     class linked_list {
     public:
@@ -155,31 +184,6 @@ namespace ssj {
 
         bool empty() const {
             return head_->next_ == nullptr;
-        }
-
-        static void push_ptr_(node<T> * n, node<T> * head, node<T> * tail) {
-            assert(n != nullptr);
-            auto p = head->next_;
-            head->next_ = n;
-            if(p == nullptr) {
-                tail = n;
-            } else {
-                n->next_ = p;
-            }
-        }
-
-        static node<T> * pop_ptr_(node<T> * head, node<T> * tail) {
-            if(head->next_ != nullptr) {
-                auto p = head->next_;
-                head->next_ = p->next_;
-                p->next_ = nullptr;
-
-                if(head->next_ == nullptr) {
-                    tail = head;
-                }
-                return p;
-            }
-            return nullptr;
         }
 
     public:

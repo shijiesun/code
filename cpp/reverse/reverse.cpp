@@ -52,7 +52,7 @@ int main() {
     {
         ssj::linked_list<data_t> ll;
 
-        int count = 1;
+        int count = 5;
 
         cout << "==================== push_back" << endl;
 
