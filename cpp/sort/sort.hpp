@@ -18,9 +18,9 @@ namespace ssj {
 
             for (int i = 0; i < length; ++i) {
                 for(int j = 0; j < length - i - 1; ++j) {
-                    if(*(arr + j) > *(arr + j + 1)) {
+                    if(compare(*(arr + j), *(arr + j + 1))) {
                         swap(*(arr + j), *(arr + j + 1));
-                        //print(arr, length);
+                        print(arr, length);
                     }
                 }
             }
@@ -38,6 +38,15 @@ namespace ssj {
             a = move(b);
             b = move(t);
         }
+
+        static bool compare(const T & a, const T & b) {
+            return a > b;
+        }
+/*
+        static bool compare<const int &>(const int & a, const int & b) {
+            return a < b;
+        }
+*/
     };
 }//namespace ssj
 
