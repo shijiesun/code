@@ -118,6 +118,33 @@ namespace ssj {
             tail_ = tail;
         }
 
+        void reverse2() {
+            if(head_->next_ == nullptr || head_->next_->next_ == nullptr) return;
+            auto p = head_->next_;
+            auto q = p->next_;
+            auto r = q->next_;
+
+            p->next_ = nullptr;
+            do {
+                q->next_ = p;
+
+                p = q;
+                q = r;
+                if(r != nullptr)
+                    r = r->next_;
+            } while(r != nullptr);
+
+            if(q != nullptr) {
+                q->next_ = p;
+                head_->next_ = q;
+            } else {
+                if(p != nullptr) {
+                    head_->next_ = p;
+                }
+            }
+
+        }
+
         void print() const {
             node<T> * p = head_->next_;
             while(p != nullptr) {
@@ -129,7 +156,6 @@ namespace ssj {
         bool empty() const {
             return head_->next_ == nullptr;
         }
-
 
         static void push_ptr_(node<T> * n, node<T> * head, node<T> * tail) {
             assert(n != nullptr);
