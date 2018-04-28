@@ -48,7 +48,7 @@ ostream & operator<<(ostream & out, const data_t & data) {
 }
 
 int main() {
-    //while(1) {
+//    while(true)
     {
         ssj::linked_list<data_t> ll;
 
@@ -58,9 +58,13 @@ int main() {
 
         for (int i = 0; i < count; ++i) {
             ll.push_back(data_t(i));
+            //data_t a(i);
+            //ll.push_back(a);
         }
 
+
         ll.print();
+
 
         cout << "==================== reverse" << endl;
 
@@ -81,15 +85,19 @@ int main() {
         cout << "==================== push" << endl;
 
         for (int i = 0; i < count; ++i) {
-            data_t a(i);
-            ll.push(a);
+            //data_t a(i);
+            //ll.push(a);
+            //cout << "push:" << a.value_ << endl;
 
-            cout << "push:" << a.value_ << endl;
+            ll.push(data_t(i));
+
+
         }
 
         ll.print();
 
         cout << "==================== end" << endl;
+
     }
     return 1;
 }

@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <memory>
+#include <assert.h>
 
 using namespace std;
 
@@ -13,12 +14,19 @@ namespace ssj {
     class node {
     public:
         T value_;
-        node * next;
+        node * next_;
 
     public:
-        node() {}
+        node() : value_(-1), next_(nullptr) {
+            cout << "----------------------------node() -----------" << endl;
+        }
 
-        explicit node(T v) : value_(move(v)), next(nullptr) {
+        explicit node(T v) : value_(move(v)), next_(nullptr) {
+            cout << "----------------------------node() -----------" << endl;
+        }
+
+        ~node() {
+            cout << "---------------------------- ~node() -----------" << endl;
         }
 
     private:
@@ -29,63 +37,58 @@ namespace ssj {
     template<typename T>
     class linked_list {
     public:
+        //三种写法对比右值,左值引用,值传递的对比
         void push_back(T && val) {
+            cout << "call push_back rvalue" << endl;
             node<T> * n = new node<T>(move(val));
-            n->next = nullptr;
+            n->next_ = nullptr;
 
-            tail_->next = n;
-            tail_ = tail_->next;
+            tail_->next_ = n;
+            tail_ = tail_->next_;
+        }
+
+        void push_back(const T & val) {
+            cout << "call push_back lvalue reference" << endl;
+            node<T> * n = new node<T>(val);
+            n->next_ = nullptr;
+
+            tail_->next_ = n;
+            tail_ = tail_->next_;
         }
 
         void push(T val) {
-            auto p = head_->next;
-
             node<T> * n = new node<T>(move(val));
 
-            if(p == nullptr) {
-                head_->next = n;
-                tail_ = n;
-            } else {
-                n->next = p;
-                head_->next = n;
-            }
+            push_ptr_(n, head_, tail_);
         }
 
 
         T pop() {
             cout << "call linked_list::pop" << endl;
-            if(!empty()) {
-                auto p = head_->next;
-                head_->next = p->next;
-                p->next = nullptr;
+            auto p = pop_ptr_(head_, tail_);
+            T a;
+            if(p != nullptr) {
+                a = move(p->value_);
 
-                if(head_->next == nullptr) {
-                    tail_ = head_;
-                }
-
-                if(p != nullptr) {
-                    return move(p->value_);
-
-                    delete p;
-                    p = nullptr;
-                }
-
+                delete p;
+                p = nullptr;
             }
-            return T();
+
+            return a;
         }
 
 /*
-        unique_ptr<node<T>> pop() {
-            if(!empty()) {
-                auto p = head_->next;
-                head_->next = p->next;
-                p->next = nullptr;
+  unique_ptr<node<T>> pop() {
+  if(!empty()) {
+  auto p = head_->next_;
+  head_->next_ = p->next_;
+  p->next_ = nullptr;
 
-                if(head_->next == nullptr) {
-                    tail_ = head_;
-                }
+  if(head_->next_ == nullptr) {
+  tail_ = head_;
+  }
 
-                return unique_ptr<node<T>>(p);
+  return unique_ptr<node<T>>(p);
 
   //if(p != nullptr) {
   //cout << "pop:" << p->value_ << endl;
@@ -93,37 +96,76 @@ namespace ssj {
   //p = nullptr;
   //}
 
-            }
-            return nullptr;
-        }
+  }
+  return nullptr;
+  }
 */
 
+        //所谓反向,其实时利用链表的插入和删除重新生产一个新的链表
         void reverse() {
+            auto head = new node<T>();
+            head->next_ = nullptr;
+            auto tail = head;
 
+            while(head_->next_ != nullptr) {
+                auto n = pop_ptr_(head_, tail_);
+
+                push_ptr_(n, head, tail);
+            }
+            delete head_;
+
+            head_ = head;
+            tail_ = tail;
         }
 
         void print() const {
-            node<T> * p = head_->next;
+            node<T> * p = head_->next_;
             while(p != nullptr) {
                 cout << p->value_ << endl;
-                p = p->next;
+                p = p->next_;
             }
         }
 
         bool empty() const {
-            return head_->next == nullptr;
+            return head_->next_ == nullptr;
+        }
+
+
+        static void push_ptr_(node<T> * n, node<T> * head, node<T> * tail) {
+            assert(n != nullptr);
+            auto p = head->next_;
+            head->next_ = n;
+            if(p == nullptr) {
+                tail = n;
+            } else {
+                n->next_ = p;
+            }
+        }
+
+        static node<T> * pop_ptr_(node<T> * head, node<T> * tail) {
+            if(head->next_ != nullptr) {
+                auto p = head->next_;
+                head->next_ = p->next_;
+                p->next_ = nullptr;
+
+                if(head->next_ == nullptr) {
+                    tail = head;
+                }
+                return p;
+            }
+            return nullptr;
         }
 
     public:
         linked_list() {
             head_ = new node<T>();
-            head_->next = nullptr;
+            head_->next_ = nullptr;
             tail_ = head_;
         }
 
         ~linked_list() {
             node<T> * p = head_;
-            while(head_->next != nullptr) {
+            while(head_->next_ != nullptr) {
                 pop();
             }
 
