@@ -8,10 +8,35 @@ using namespace std;
 
 namespace ssj {
 
-    template<typename T>
-    class sort {
-    public:
-        static void bubble_sort(T * arr, int length) {
+    namespace sort {
+
+        template<typename T>
+        void print(const T * arr, int length) {
+            for (int i = 0; i < length; ++i) {
+                cout << *(arr + i) << " ";
+            }
+            cout << endl;
+        }
+
+        template<typename T>
+        void swap(T & a, T & b) {
+            T t = move(a);
+            a = move(b);
+            b = move(t);
+        }
+
+        template<typename T>
+        bool compare(const T & a, const T & b) {
+            return a < b;
+        }
+
+        template<>
+        bool compare(const int & a, const int & b) {
+            return a > b;
+        }
+
+        template<typename T>
+        void bubble_sort(T * arr, int length) {
             if (arr == nullptr || length < 2) {
                 return;
             }
@@ -26,28 +51,26 @@ namespace ssj {
             }
         }
 
-        static void print(const T * arr, int length) {
-            for (int i = 0; i < length; ++i) {
-                cout << *(arr + i) << " ";
+        template<typename T>
+        void insert_sort(T * arr, int length) {
+            if (arr == nullptr || length < 2) {
+                return;
             }
-            cout << endl;
-        }
 
-        static void swap(T & a, T & b) {
-            T t = move(a);
-            a = move(b);
-            b = move(t);
+            for (int i = 1; i < length; ++i) {
+                for(int j = 0; j < i; ++j) {
+                    if(compare(*(arr + j), *(arr + i))) {
+                        T a = move(*(arr + i));
+                        for(int k = i - 1; k >= j; --k) {
+                            *(arr + k + 1) = *(arr + k);
+                        }
+                        *(arr + j) = a;
+                        print(arr, length);
+                    }
+                }
+            }
         }
-
-        static bool compare(const T & a, const T & b) {
-            return a > b;
-        }
-/*
-        static bool compare<const int &>(const int & a, const int & b) {
-            return a < b;
-        }
-*/
-    };
+    }
 }//namespace ssj
 
 #endif

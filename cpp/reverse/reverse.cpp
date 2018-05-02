@@ -30,12 +30,15 @@ public:
         return *this;
     }
 
-    data_t(data_t && other) : value_(other.value_) {
+    data_t(data_t && other) {
+        value_ = other.value_;
+        other.value_ = 0;
         cout << "==========move data_t construction" << endl;
     }
 
     data_t & operator=(data_t && other) {
         value_ = other.value_;
+        other.value_ = 0;
         cout << "==========move data_t assign" << endl;
         return *this;
     }
