@@ -12,12 +12,14 @@ int main() {
 
     int length = sizeof(arr) / sizeof(int);
 
-    //ssj::sort::bubble_sort<int>(arr, length);
+    //ssj::sort::bubble_sort<int>(arr, 0, length);
 
-    ssj::sort::insert_sort<int>(arr, length);
+    //ssj::sort::insert_sort<int>(arr, 0, length);
+
+    ssj::sort::quick_sort<int>(arr, 0, length);
 
     cout << "after sort:";
-    ssj::sort::print<int>(arr, length);
+    ssj::sort::print<int>(arr, 0, length);
 
 /*
     int a = 3;

@@ -11,8 +11,8 @@ namespace ssj {
     namespace sort {
 
         template<typename T>
-        void print(const T * arr, int length) {
-            for (int i = 0; i < length; ++i) {
+        void print(const T * arr, int begin, int end) {
+            for (int i = begin; i < end; ++i) {
                 cout << *(arr + i) << " ";
             }
             cout << endl;
@@ -26,48 +26,96 @@ namespace ssj {
         }
 
         template<typename T>
-        bool compare(const T & a, const T & b) {
+        bool less(const T & a, const T & b) {
             return a < b;
         }
-
-        template<>
-        bool compare(const int & a, const int & b) {
-            return a > b;
-        }
-
+/*
+  template<>
+  bool less(const int & a, const int & b) {
+  return a > b;
+  }
+*/
         template<typename T>
-        void bubble_sort(T * arr, int length) {
-            if (arr == nullptr || length < 2) {
+        void bubble_sort(T * arr, int begin, int end) {
+            if (arr == nullptr || end < 2) {
                 return;
             }
 
-            for (int i = 0; i < length; ++i) {
-                for(int j = 0; j < length - i - 1; ++j) {
-                    if(compare(*(arr + j), *(arr + j + 1))) {
+            for (int i = begin; i < end; ++i) {
+                for(int j = begin; j < end - i - 1; ++j) {
+                    if(less(*(arr + j + 1), *(arr + j))) {
                         swap(*(arr + j), *(arr + j + 1));
-                        print(arr, length);
+                        print(arr, begin, end);
                     }
                 }
             }
         }
 
         template<typename T>
-        void insert_sort(T * arr, int length) {
-            if (arr == nullptr || length < 2) {
+        void insert_sort(T * arr, int begin, int end) {
+            if (arr == nullptr || end < 2) {
                 return;
             }
 
-            for (int i = 1; i < length; ++i) {
-                for(int j = 0; j < i; ++j) {
-                    if(compare(*(arr + j), *(arr + i))) {
+            for (int i = begin + 1; i < end; ++i) {
+                for(int j = begin; j < i; ++j) {
+                    if(less(*(arr + i), *(arr + j))) {
                         T a = move(*(arr + i));
                         for(int k = i - 1; k >= j; --k) {
                             *(arr + k + 1) = *(arr + k);
                         }
                         *(arr + j) = a;
-                        print(arr, length);
+                        print(arr, begin, end);
                     }
                 }
+            }
+        }
+
+        template<typename T>
+        void quick_sort(T * arr, int begin, int end) {
+            cout << "quick_sort(" << begin << "," << end << ")" << endl;
+            cout << "before:\t";
+
+            print(arr, begin, end);
+
+            int i = begin + 1;
+            int j = end - 1;
+
+            if(i >= j) return;
+
+            int pivot = begin;
+
+            while(i < j) {
+
+                while(i < j && !less(*(arr + j), *(arr + pivot))) {
+                    --j;
+                }
+
+                while(i < j && !less(*(arr + pivot), *(arr + i))) {
+                    ++i;
+                }
+
+                if(i <= j && less(*(arr + j), *(arr + i))) {
+                    swap(*(arr + i), *(arr + j));
+                    cout << "swap_ij:(" << i << "," << j << ")" << endl;
+                    print(arr, begin, end);
+                }
+
+            }
+
+            cout << "j:" << j << endl;
+
+            if(less(*(arr + j), *(arr + pivot))) {
+                swap(*(arr + pivot), *(arr + j));
+                cout << "swap_pivot:(" << pivot << "," << j << ")" << endl;
+                cout << "after:\t";
+                print(arr, begin, end);
+
+                quick_sort(arr, begin, j);
+                quick_sort(arr, j + 1, end);
+            } else {
+                ++begin;
+                quick_sort(arr, begin, end);
             }
         }
     }
