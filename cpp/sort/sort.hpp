@@ -72,26 +72,17 @@ namespace ssj {
         }
 
         template<typename T>
-        void quick_sort(T * arr, int begin, int end) {
-            cout << "quick_sort(" << begin << "," << end << ")" << endl;
-            cout << "before:\t";
-
-            print(arr, begin, end);
-
+        int partition(T * arr, int begin, int end) {
             int i = begin + 1;
             int j = end - 1;
 
-            if(i >= j) return;
-
-            int pivot = begin;
-
             while(i < j) {
 
-                while(i < j && !less(*(arr + j), *(arr + pivot))) {
+                while(i < j && !less(*(arr + j), *(arr + begin))) {
                     --j;
                 }
 
-                while(i < j && !less(*(arr + pivot), *(arr + i))) {
+                while(i < j && !less(*(arr + begin), *(arr + i))) {
                     ++i;
                 }
 
@@ -102,23 +93,44 @@ namespace ssj {
                 }
 
             }
+            return j;
+        }
 
-            cout << "j:" << j << endl;
+        template<typename T>
+        void quick_sort(T * arr, int begin, int end) {
 
-            if(less(*(arr + j), *(arr + pivot))) {
-                swap(*(arr + pivot), *(arr + j));
-                cout << "swap_pivot:(" << pivot << "," << j << ")" << endl;
+            if(begin >= end) return;
+
+            cout << "quick_sort(" << begin << "," << end << ")" << endl;
+            cout << "before:\t";
+
+            print(arr, begin, end);
+
+            int pivot = partition(arr, begin, end);
+
+            cout << "pivot:" << pivot << endl;
+
+            if(less(*(arr + pivot), *(arr + begin))) {
+                swap(*(arr + begin), *(arr + pivot));
+                cout << "swap_pivot:(" << pivot << "," << pivot << ")" << endl;
                 cout << "after:\t";
                 print(arr, begin, end);
 
-                quick_sort(arr, begin, j);
-                quick_sort(arr, j + 1, end);
+                quick_sort(arr, begin, pivot);
+                quick_sort(arr, pivot + 1, end);
             } else {
                 ++begin;
                 quick_sort(arr, begin, end);
             }
         }
+
+        template<typename T>
+        void heap_sort(T * arr, int begin, int end) {
+
+        }
     }
+
+
 }//namespace ssj
 
 #endif
