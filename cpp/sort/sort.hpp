@@ -128,7 +128,7 @@ namespace ssj {
         static bool heap_build(T * arr, int begin, int end) {
             bool flag = false;
             for(int i = end - 1; i > begin; --i) {
-                int parent = (i - 1) / 2;
+                int parent = (i - 1) >> 1;
                 if(less(*(arr + i), *(arr + parent))) {
                     swap(*(arr + i), *(arr + parent));
 
@@ -189,7 +189,7 @@ namespace ssj {
         }
 
         template<typename T>
-        void shell_insert(T * arr, int begin, int end, int d) {
+        static void shell_insert(T * arr, int begin, int end, int d) {
 
             for (int i = begin; i < end; ++i) {
                 for(int j = begin; j + d < end - i - 1; ++j) {
@@ -209,13 +209,67 @@ namespace ssj {
                 return;
             }
 
-            int d = (end - begin) / 2;
+            int d = (end - begin) >> 1;
 
             while(d > 0) {
                 shell_insert(arr, begin, end, d);
 
                 d /= 2;
             }
+        }
+
+        template<typename T>
+        void merge(T * arr, int begin, int mid, int end) {
+            T * temp = new T[end - begin];
+
+            int start1 = begin;
+            int end1 = mid;
+            int start2 = mid;
+            int end2 = end;
+
+            int k = 0;
+
+            cout << "before:\t";
+            print(arr, begin, end);
+
+            while(start1 < end1 && start2 < end2) {
+                if(less(arr[start1], arr[start2])) {
+                    temp[k++] = arr[start1++];
+                } else {
+                    temp[k++] = arr[start2++];
+                }
+            }
+
+
+            while(start1 < end1) {
+                temp[k++] = arr[start1++];
+            }
+
+            while(start2 < end2) {
+                temp[k++] = arr[start2++];
+            }
+
+            for (int i = 0; i < end - begin; ++i) {
+                *(arr + begin + i) = *(temp + i);
+            }
+
+            cout << "after:\t";
+            print(arr, begin, end);
+
+            delete [] temp;
+        }
+        
+        template<typename T>
+        void merge_sort(T * arr, int begin, int end) {
+            if(begin + 1 >= end) return;
+
+            int mid = (begin + end) >> 1;
+
+            merge_sort(arr, begin, mid);
+            merge_sort(arr, mid, end);
+
+            merge(arr, begin, mid, end);
+
         }
 
     }
