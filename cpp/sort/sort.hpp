@@ -187,6 +187,37 @@ namespace ssj {
             }
 
         }
+
+        template<typename T>
+        void shell_insert(T * arr, int begin, int end, int d) {
+
+            for (int i = begin; i < end; ++i) {
+                for(int j = begin; j + d < end - i - 1; ++j) {
+                    if(less(*(arr + j + d), *(arr + j))) {
+                        swap(*(arr + j), *(arr + j + d));
+                        cout << "d=" << d << " swap(" << j << "," << j + d << ")" << endl;
+                        print(arr, begin, end);
+                    }
+                }
+            }
+
+        }
+
+        template<typename T>
+        void shell_sort(T * arr, int begin, int end) {
+            if (arr == nullptr || end < 2) {
+                return;
+            }
+
+            int d = (end - begin) / 2;
+
+            while(d > 0) {
+                shell_insert(arr, begin, end, d);
+
+                d /= 2;
+            }
+        }
+
     }
 
 
