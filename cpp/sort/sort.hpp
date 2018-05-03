@@ -72,7 +72,7 @@ namespace ssj {
         }
 
         template<typename T>
-        int partition(T * arr, int begin, int end) {
+        static int partition(T * arr, int begin, int end) {
             int i = begin + 1;
             int j = end - 1;
 
@@ -125,7 +125,66 @@ namespace ssj {
         }
 
         template<typename T>
+        static bool heap_build(T * arr, int begin, int end) {
+            bool flag = false;
+            for(int i = end - 1; i > begin; --i) {
+                int parent = (i - 1) / 2;
+                if(less(*(arr + i), *(arr + parent))) {
+                    swap(*(arr + i), *(arr + parent));
+
+                    flag = true;
+                    //cout << "swap(" << *(arr + i) << "," << *(arr + parent) << ")" << endl;
+                    //print(arr, begin, end);
+                }
+            }
+            return flag;
+        }
+
+        template<typename T>
+        static void heap_adjust(T * arr, int begin, int end) {
+            int i = begin;
+            while(i < end - 1) {
+                int child1 = (i + 1) * 2;
+                int child2 = child1 - 1;
+
+                int child = -1;
+                if(less(*(arr + child1), *(arr + child2))) {
+                    child = child1;
+                } else {
+                    child = child2;
+                }
+
+                if(child < end && less(*(arr + child), *(arr + i))) {
+                    swap(*(arr + child), *(arr + i));
+                    cout << "swap(" << *(arr + child) << "," << *(arr + i) << ")" << endl;
+                    print(arr, begin, end);
+                }
+                i = child;
+            }
+
+        }
+
+        template<typename T>
         void heap_sort(T * arr, int begin, int end) {
+            cout << "before:\t";
+            print(arr, begin, end);
+
+            while(heap_build(arr, begin, end));
+
+            cout << "build:\t";
+            print(arr, begin, end);
+
+            for (int i = begin; i < end; ++i) {
+                swap(*(arr + begin), *(arr + end - i - 1));
+                cout << "pop swap(" << *(arr + begin) << "," << *(arr + end - i - 1) << ")" << endl;
+                print(arr, begin, end - i - 1);
+
+
+                heap_adjust(arr, begin, end - i - 1);
+
+                cout << "-----adjust(" << i << "):\t";
+                print(arr, begin, end);
+            }
 
         }
     }
