@@ -37,7 +37,7 @@ namespace ssj {
 */
         template<typename T>
         void bubble_sort(T * arr, int begin, int end) {
-            if (arr == nullptr || end < 2) {
+            if (arr == nullptr || end - begin < 2) {
                 return;
             }
 
@@ -53,7 +53,7 @@ namespace ssj {
 
         template<typename T>
         void insert_sort(T * arr, int begin, int end) {
-            if (arr == nullptr || end < 2) {
+            if (arr == nullptr || end - begin < 2) {
                 return;
             }
 
@@ -205,7 +205,7 @@ namespace ssj {
 
         template<typename T>
         void shell_sort(T * arr, int begin, int end) {
-            if (arr == nullptr || end < 2) {
+            if (arr == nullptr || end - begin < 2) {
                 return;
             }
 
@@ -296,7 +296,27 @@ namespace ssj {
 
         template<typename T>
         void counting_sort(T * arr, int begin, int end) {
+            if (arr == nullptr || end - begin < 2) {
+                return;
+            }
 
+            int max_val = max(arr, begin, end);
+
+            int count[max_val + 1];
+            memset(count, 0, (max_val + 1) * sizeof(int));
+
+            for (int i = begin; i < end; ++i) {
+                ++count[arr[i]];
+            }
+
+            print(count, 0, max_val + 1);
+
+            int k = 0;
+            for (int i = 0; i < max_val + 1; ++i) {
+                for (int j = 0; j < count[i]; ++j) {
+                    arr[k++] = i;
+                }
+            }
         }
     }
 
