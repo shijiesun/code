@@ -56,6 +56,32 @@ namespace ssj {
         }
 
         template<typename T>
+        void select_sort(T * arr, int begin, int end) {
+            if (arr == nullptr || end - begin < 2) {
+                return;
+            }
+
+            print(arr, begin, end);
+
+            for (int i = begin; i < end; ++i) {
+
+                int min = arr[i];
+                int index = -1;
+                for (int j = i + 1; j < end; ++j) {
+                    if(less(arr[j], min)) {
+                        min = arr[j];
+                        index = j;
+                    }
+                }
+                if(index > -1 && less(arr[index], arr[i])) {
+                    swap(arr[index], arr[i]);
+                }
+
+                print(arr, begin, end);
+            }
+        }
+
+        template<typename T>
         void insert_sort(T * arr, int begin, int end) {
             if (arr == nullptr || end - begin < 2) {
                 return;
