@@ -3,6 +3,9 @@
 
 #include <iostream>
 #include <memory.h>
+#include <memory>
+#include <algorithm>
+#include <vector>
 
 using namespace std;
 
@@ -317,6 +320,61 @@ namespace ssj {
                     arr[k++] = i;
                 }
             }
+        }
+
+        template<typename T>
+        int f(const T & ele, int num) {
+            return ele / num;
+        }
+/*
+        template<>
+        int f(int ele, int num) {
+            return ele / num;
+        }
+
+        template<typename T>
+        bool comp(T a, T b) {
+            return *a < *b;
+        }
+
+        template<typename T>
+        bool operator<(const unique_ptr<T> & a, const unique_ptr<T> & b) {
+            return *a < *b;
+        }
+*/
+
+        bool comp (const unique_ptr<int> & i,const unique_ptr<int> & j) { return (*i<*j); }
+
+        template<typename T>
+        void bucket_sort(T * arr, int begin, int end) {
+            if (arr == nullptr || end - begin < 2) {
+                return;
+            }
+
+            int num = 3;
+
+            vector<unique_ptr<T> > buckets[4];
+            for (int i = 0; i < num; ++i) {
+                buckets[i] = vector<unique_ptr<T> >();
+            }
+
+            for (int i = begin; i < end; ++i) {
+                buckets[f(arr[i], num)].push_back(unique_ptr<T>(new T(arr[i])));
+            }
+
+            for (int i = 0; i < 4; ++i) {
+                auto & vec = buckets[i];
+                std::sort(vec.begin(), vec.end(), comp);
+            }
+
+            int k = 0;
+            for (int i = 0; i < 4; ++i) {
+                auto & vec = buckets[i];
+                for(const unique_ptr<T> & a : vec) {
+                    arr[k++] = *a;
+                }
+            }
+
         }
     }
 

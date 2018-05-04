@@ -28,7 +28,9 @@ int main() {
 
     //ssj::sort::merge_sort<int>(arr, 0, length);
 
-    ssj::sort::counting_sort<int>(arr, 0, length);
+    //ssj::sort::counting_sort<int>(arr, 0, length);
+
+    ssj::sort::bucket_sort<int>(arr, 0, length);
 
     cout << "after sort:";
     ssj::sort::print<int>(arr, 0, length);
