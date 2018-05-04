@@ -9,8 +9,8 @@ int main() {
     //int arr[] = {9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
 
     //int arr[] = {3,2,4,1};
-    int arr[] = { 3, 5, 3, 0, 8, 6, 1, 5, 8, 6, 2, 4, 9, 4, 7, 0, 1, 8, 9, 7, 3, 1, 2, 5, 9, 7, 4, 0, 2, 6 };
-    //int arr[] = {49, 38, 65, 97, 76, 13, 27, 50};
+    //int arr[] = { 3, 5, 3, 0, 8, 6, 1, 5, 8, 6, 2, 4, 9, 4, 7, 0, 1, 8, 9, 7, 3, 1, 2, 5, 9, 7, 4, 0, 2, 6 };
+    int arr[] = {49, 38, 65, 97, 76, 13, 27, 50};
 
     //double arr[] = {0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9};
 
@@ -28,12 +28,17 @@ int main() {
 
     //ssj::sort::merge_sort<int>(arr, 0, length);
 
-    //ssj::sort::counting_sort<int>(arr, 0, length);
+    //ssj::sort::counting_sort(arr, 0, length);
 
-    ssj::sort::bucket_sort<int>(arr, 0, length);
+    //ssj::sort::bucket_sort(arr, 0, length);
+
+    ssj::sort::radix_sort(arr, 0, length);
 
     cout << "after sort:";
     ssj::sort::print<int>(arr, 0, length);
+
+
+    //cout << ssj::sort::getbit(123, 1) << endl;
 
 /*
     int a = 3;

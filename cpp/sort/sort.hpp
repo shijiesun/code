@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <memory.h>
+#include <math.h>
 #include <memory>
 #include <algorithm>
 #include <vector>
@@ -297,8 +298,7 @@ namespace ssj {
             return min;
         }
 
-        template<typename T>
-        void counting_sort(T * arr, int begin, int end) {
+        void counting_sort(int * arr, int begin, int end) {
             if (arr == nullptr || end - begin < 2) {
                 return;
             }
@@ -343,7 +343,10 @@ namespace ssj {
         }
 */
 
-        bool comp (const unique_ptr<int> & i,const unique_ptr<int> & j) { return (*i<*j); }
+        bool comp(const unique_ptr<int> & i,const unique_ptr<int> & j) { return (*i<*j); }
+
+        //template<typename T>
+        //bool comp(const unique_ptr<T> & i,const unique_ptr<T> & j) { return (*i<*j); }
 
         template<typename T>
         void bucket_sort(T * arr, int begin, int end) {
@@ -352,6 +355,7 @@ namespace ssj {
             }
 
             int num = 3;
+            int buckets_num = max(arr, begin, end) / num + 1;
 
             vector<unique_ptr<T> > buckets[4];
             for (int i = 0; i < num; ++i) {
@@ -362,17 +366,67 @@ namespace ssj {
                 buckets[f(arr[i], num)].push_back(unique_ptr<T>(new T(arr[i])));
             }
 
-            for (int i = 0; i < 4; ++i) {
+            for (int i = 0; i < buckets_num; ++i) {
                 auto & vec = buckets[i];
                 std::sort(vec.begin(), vec.end(), comp);
             }
 
             int k = 0;
-            for (int i = 0; i < 4; ++i) {
+            for (int i = 0; i < buckets_num; ++i) {
                 auto & vec = buckets[i];
                 for(const unique_ptr<T> & a : vec) {
                     arr[k++] = *a;
                 }
+            }
+        }
+
+        int bitcount(int n) {
+            return log(n) / log(10) + 1;
+        }
+/*
+        int bitcount(int n) {
+            int len = 0;
+            do {
+                ++len;
+            } while(n / 10);
+            return len;
+        }
+*/
+        int maxbit(int * arr, int begin, int end) {
+            int max_val = max(arr, begin, end);
+            return bitcount(max_val);
+        }
+
+        int getbit(int num, int n) {
+            return num / static_cast<int>(pow(10, n)) % 10;
+        }
+
+        void radix_sort(int * arr, int begin, int end) {
+            if (arr == nullptr || end - begin < 2) {
+                return;
+            }
+
+            int mb = maxbit(arr, begin, end);
+
+            for (int n = 0; n < mb; ++n) {
+                vector<int> buckets[10];
+                for (int j = 0; j < 10; ++j) {
+                    buckets[j] = vector<int>();
+                }
+
+                for (int k = begin; k < end; ++k) {
+                    int b = getbit(arr[k], n);
+                    buckets[b].push_back(arr[k]);
+                }
+
+                int k = 0;
+                for (int j = 0; j < 10; ++j) {
+                    for(int a : buckets[j]) {
+                        arr[k++] = a;
+                    }
+                }
+
+                print(arr, begin, end);
             }
 
         }
