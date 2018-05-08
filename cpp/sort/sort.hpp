@@ -2,7 +2,7 @@
 #define __SSJ_SORT__
 
 #include <iostream>
-#include <memory.h>
+#include <string.h>
 #include <math.h>
 #include <memory>
 #include <algorithm>

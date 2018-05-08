@@ -19,11 +19,11 @@ int main() {
     //ssj::sort::bubble_sort<int>(arr, 0, length);
 
 
-    ssj::sort::select_sort(arr, 0, length);
+    //ssj::sort::select_sort(arr, 0, length);
 
     //ssj::sort::insert_sort<int>(arr, 0, length);
 
-    //ssj::sort::quick_sort<int>(arr, 0, length);
+    ssj::sort::quick_sort<int>(arr, 0, length);
 
     //ssj::sort::heap_sort<int>(arr, 0, length);
 
