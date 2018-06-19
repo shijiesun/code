@@ -31,5 +31,7 @@ int main() {
 
     cout << "main:" << msg << endl;
 
+    cout << std::thread::hardware_concurrency() << endl;
+
     return 0;
 }
