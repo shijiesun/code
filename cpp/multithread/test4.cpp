@@ -7,9 +7,10 @@ using namespace std;
 std::mutex mu;
 
 void print(const string & msg, int id) {
-    mu.lock();
+    std::lock_guard<std::mutex> guard(mu);
+    //mu.lock();
     cout << msg << ":" << id << endl;
-    mu.unlock();
+    //mu.unlock();
 }
 
 void fun1() {
