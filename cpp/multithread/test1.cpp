@@ -10,9 +10,9 @@ void fun1() {
 
 class factor {
 public:
-    void operator()() {
+    void operator()(string msg) {
         for (int i = 0; i < 100; ++i) {
-            cout << "-----thread:" << i << endl;
+            cout << "-----thread:" << i << " msg:" << msg << endl;
         }
 
     }
@@ -21,7 +21,8 @@ public:
 int main() {
     //std::thread t1(fun1);
     factor f;
-    std::thread t1(f);
+    string msg = "I love abc";
+    std::thread t1(f, msg);
 
     try {
         for (int i = 0; i < 100; ++i) {
