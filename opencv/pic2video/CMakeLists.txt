@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 2.8)
+project( pic2video )
+find_package( OpenCV REQUIRED )
+include_directories( ${OpenCV_INCLUDE_DIRS} )
+add_executable( pic2video pic2video.cpp )
+target_link_libraries( pic2video ${OpenCV_LIBS} )
