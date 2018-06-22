@@ -21,7 +21,7 @@ namespace ssj {
             cout << "----------------------------node() -----------" << endl;
         }
 
-        explicit node(T v) : value_(move(v)), next_(nullptr) {
+        explicit node(T && v) : value_(v), next_(nullptr) {
             cout << "----------------------------node() -----------" << endl;
         }
 
@@ -69,15 +69,6 @@ namespace ssj {
         //三种写法对比右值,左值引用,值传递的对比
         void push_back(T && val) {
             cout << "call push_back rvalue" << endl;
-            node<T> * n = new node<T>(move(val));
-            n->next_ = nullptr;
-
-            tail_->next_ = n;
-            tail_ = tail_->next_;
-        }
-
-        void push_back(const T & val) {
-            cout << "call push_back lvalue reference" << endl;
             node<T> * n = new node<T>(val);
             n->next_ = nullptr;
 
@@ -85,8 +76,8 @@ namespace ssj {
             tail_ = tail_->next_;
         }
 
-        void push(T val) {
-            node<T> * n = new node<T>(move(val));
+        void push(T && val) {
+            node<T> * n = new node<T>(val);
 
             push_ptr_(n, head_, tail_);
         }
@@ -97,7 +88,7 @@ namespace ssj {
             auto p = pop_ptr_(head_, tail_);
             T a;
             if(p != nullptr) {
-                a = move(p->value_);
+                a = p->value_;
 
                 delete p;
                 p = nullptr;
