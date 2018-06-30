@@ -15,6 +15,7 @@ int main(int argc, char * argv[])
     std::string videoname = std::string(argv[3]) + ".avi";
 
     //【1】输出视频
+    //VideoWriter writer(videoname.c_str(), VideoWriter::fourcc('M', 'P', '4', '2'), fps, Size(1280, 720)); //此处的尺寸针对不同的视频需要调整
     VideoWriter writer(videoname.c_str(), VideoWriter::fourcc('M', 'J', 'P', 'G'), fps, Size(1280, 720)); //此处的尺寸针对不同的视频需要调整
     //【2】循环显示每一帧
     int i = 1;
